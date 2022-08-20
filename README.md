@@ -38,8 +38,14 @@ Install conda and ROOT following the instructions [here](https://indico.cern.ch/
 
 # Option 3: Using Docker
 
-# TODO
+```bash
+cd /path/to/analysis/repo
+```
 
+```bash
+docker run -it --rm -v $PWD:/analysis -w /analysis rootproject/root-conda:6.18.04 /bin/bash
+ ```
+ 
 ## Preprocessing: Reducing the initial samples
 
 To reduce the initial samples to a fraction of the size, call the bash script `reduce.sh`, which processes all relevant samples with a constant reduction factor.
