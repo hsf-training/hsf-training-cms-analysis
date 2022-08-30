@@ -30,3 +30,9 @@ repos:
       - id: codespell
         args: ["-I", "codespell.txt"]
         files: '.*\.md'
+
+-   repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+    - id: black
+      language_version: python3.7
