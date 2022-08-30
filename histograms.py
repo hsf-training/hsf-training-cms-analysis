@@ -8,6 +8,7 @@
 
 import argparse
 import ROOT
+
 ROOT.gROOT.SetBatch(True)
 
 
@@ -18,47 +19,50 @@ ROOT.gROOT.SetBatch(True)
 # the lower edge and the upper edge of the histogram.
 default_nbins = 30
 ranges = {
-        "pt_1": (default_nbins, 17, 70),
-        "pt_2": (default_nbins, 20, 70),
-        "eta_1": (default_nbins, -2.1, 2.1),
-        "eta_2": (default_nbins, -2.3, 2.3),
-        "phi_1": (default_nbins, -3.14, 3.14),
-        "phi_2": (default_nbins, -3.14, 3.14),
-        "iso_1": (default_nbins, 0, 0.10),
-        "iso_2": (default_nbins, 0, 0.10),
-        "q_1": (2, -2, 2),
-        "q_2": (2, -2, 2),
-        "pt_met": (default_nbins, 0, 60),
-        "phi_met": (default_nbins, -3.14, 3.14),
-        "m_1": (default_nbins, 0, 0.2),
-        "m_2": (default_nbins, 0, 2),
-        "mt_1": (default_nbins, 0, 100),
-        "mt_2": (default_nbins, 0, 100),
-        "dm_2": (11, 0, 11),
-        "m_vis": (default_nbins, 20, 140),
-        "pt_vis": (default_nbins, 0, 60),
-        "jpt_1": (default_nbins, 30, 70),
-        "jpt_2": (default_nbins, 30, 70),
-        "jeta_1": (default_nbins, -4.7, 4.7),
-        "jeta_2": (default_nbins, -4.7, 4.7),
-        "jphi_1": (default_nbins, -3.14, 3.14),
-        "jphi_2": (default_nbins, -3.14, 3.14),
-        "jm_1": (default_nbins, 0, 20),
-        "jm_2": (default_nbins, 0, 20),
-        "jbtag_1": (default_nbins, 0, 1.0),
-        "jbtag_2": (default_nbins, 0, 1.0),
-        "npv": (25, 5, 30),
-        "njets": (5, 0, 5),
-        "mjj": (default_nbins, 0, 400),
-        "ptjj": (default_nbins, 0, 200),
-        "jdeta": (default_nbins, -9.4, 9.4),
-        }
+    "pt_1": (default_nbins, 17, 70),
+    "pt_2": (default_nbins, 20, 70),
+    "eta_1": (default_nbins, -2.1, 2.1),
+    "eta_2": (default_nbins, -2.3, 2.3),
+    "phi_1": (default_nbins, -3.14, 3.14),
+    "phi_2": (default_nbins, -3.14, 3.14),
+    "iso_1": (default_nbins, 0, 0.10),
+    "iso_2": (default_nbins, 0, 0.10),
+    "q_1": (2, -2, 2),
+    "q_2": (2, -2, 2),
+    "pt_met": (default_nbins, 0, 60),
+    "phi_met": (default_nbins, -3.14, 3.14),
+    "m_1": (default_nbins, 0, 0.2),
+    "m_2": (default_nbins, 0, 2),
+    "mt_1": (default_nbins, 0, 100),
+    "mt_2": (default_nbins, 0, 100),
+    "dm_2": (11, 0, 11),
+    "m_vis": (default_nbins, 20, 140),
+    "pt_vis": (default_nbins, 0, 60),
+    "jpt_1": (default_nbins, 30, 70),
+    "jpt_2": (default_nbins, 30, 70),
+    "jeta_1": (default_nbins, -4.7, 4.7),
+    "jeta_2": (default_nbins, -4.7, 4.7),
+    "jphi_1": (default_nbins, -3.14, 3.14),
+    "jphi_2": (default_nbins, -3.14, 3.14),
+    "jm_1": (default_nbins, 0, 20),
+    "jm_2": (default_nbins, 0, 20),
+    "jbtag_1": (default_nbins, 0, 1.0),
+    "jbtag_2": (default_nbins, 0, 1.0),
+    "npv": (25, 5, 30),
+    "njets": (5, 0, 5),
+    "mjj": (default_nbins, 0, 400),
+    "ptjj": (default_nbins, 0, 200),
+    "jdeta": (default_nbins, -9.4, 9.4),
+}
 
 
 # Book a histogram for a specific variable
 def bookHistogram(df, variable, range_):
-    return df.Histo1D(ROOT.ROOT.RDF.TH1DModel(variable, variable, range_[0], range_[1], range_[2]),\
-                      variable, "weight")
+    return df.Histo1D(
+        ROOT.ROOT.RDF.TH1DModel(variable, variable, range_[0], range_[1], range_[2]),
+        variable,
+        "weight",
+    )
 
 
 # Write a histogram with a given name to the output ROOT file
@@ -97,9 +101,11 @@ def main(sample, process, output):
     print(">>> Process skimmed sample {} for process {}".format(sample, process))
 
     # Load skimmed dataset and apply baseline selection
-    df = ROOT.ROOT.RDataFrame("Events", sample)\
-                  .Filter("mt_1<30", "Muon transverse mass cut for W+jets suppression")\
-                  .Filter("iso_1<0.1", "Require isolated muon for signal region")
+    df = (
+        ROOT.ROOT.RDataFrame("Events", sample)
+        .Filter("mt_1<30", "Muon transverse mass cut for W+jets suppression")
+        .Filter("iso_1<0.1", "Require isolated muon for signal region")
+    )
 
     # Book histograms for the signal region
     df1 = df.Filter("q_1*q_2<0", "Require opposited charge for signal region")

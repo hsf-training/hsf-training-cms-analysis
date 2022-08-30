@@ -5,8 +5,10 @@
 
 import argparse
 import ROOT
+
 ROOT.gROOT.SetBatch(True)
 import os
+
 
 def main(path, output):
     # Read and preprocess histograms for fitting
@@ -44,7 +46,14 @@ def main(path, output):
     # Write all histograms used for fitting in a new file
     inputfile = os.path.join(output, "fit_inputs.root")
     f = ROOT.TFile(inputfile, "RECREATE")
-    for hist, label in [(ztt, "ZTT"), (zll, "ZLL"), (tt, "TT"), (w, "W"), (qcd, "QCD"), (data, "data_obs")]:
+    for hist, label in [
+        (ztt, "ZTT"),
+        (zll, "ZLL"),
+        (tt, "TT"),
+        (w, "W"),
+        (qcd, "QCD"),
+        (data, "data_obs"),
+    ]:
         hist.SetName(label)
         hist.Write(label, ROOT.TObject.kOverwrite)
     f.Close()
@@ -64,13 +73,13 @@ def main(path, output):
     channel.SetStatErrorConfig(0.1, "Poisson")
 
     sample = ROOT.RooStats.HistFactory.Sample("ZTT", "ZTT", inputfile)
-    sample.AddOverallSys("ZTT_xsec_sys",  0.9, 1.1)
+    sample.AddOverallSys("ZTT_xsec_sys", 0.9, 1.1)
     sample.AddNormFactor("ZTT_mu", 1, 0, 2)
     channel.AddSample(sample)
 
     for process in ["W", "ZLL", "TT", "QCD"]:
         sample = ROOT.RooStats.HistFactory.Sample(process, process, inputfile)
-        sample.AddOverallSys(process + "_xsec_sys",  0.9, 1.1)
+        sample.AddOverallSys(process + "_xsec_sys", 0.9, 1.1)
         channel.AddSample(sample)
 
     meas.AddChannel(channel)
@@ -94,7 +103,8 @@ def main(path, output):
     upper_limit = interval.UpperLimit(poi)
     bestfit_ZTT_mu = bestfit_params["ZTT_mu"].getValV()
     title = "ZTT_mu: {:.3f} +{:.3f} -{:.3f}".format(
-        bestfit_ZTT_mu, upper_limit - bestfit_ZTT_mu, bestfit_ZTT_mu - lower_limit)
+        bestfit_ZTT_mu, upper_limit - bestfit_ZTT_mu, bestfit_ZTT_mu - lower_limit
+    )
 
     plot = ROOT.RooStats.LikelihoodIntervalPlot(interval)
     plot.SetNPoints(50)
@@ -111,7 +121,9 @@ def main(path, output):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", type=str, help="Full path to ROOT file with all histograms")
+    parser.add_argument(
+        "path", type=str, help="Full path to ROOT file with all histograms"
+    )
     parser.add_argument("output", type=str, help="Output directory for plots")
     args = parser.parse_args()
     main(args.path, args.output)
