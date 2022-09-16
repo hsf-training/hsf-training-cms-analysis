@@ -1,0 +1,46 @@
+name: HSF CMS Analysis Test
+
+on:
+  pull_request:
+  push:
+    branches: 
+     - master
+     - main
+
+jobs:
+  test-analysis:
+    runs-on: ubuntu-latest
+    container: rootproject/root:${{ matrix.version }}
+    strategy:
+      matrix:
+        version: [6.22.08-conda, 6.24.06-conda, latest]
+
+    permissions:
+      contents: read
+      packages: write
+
+    name: run-test
+    steps:
+
+      - name: checkout folder
+        uses: actions/checkout@v3
+
+      - name: skim-${{ matrix.version }}
+        run: |
+          mkdir -p $HOME/awesome-workshop/skims
+          bash skim.sh root://eospublic.cern.ch//eos/root-eos/HiggsTauTauReduced/ $HOME/awesome-workshop/skims
+
+      - name: histogram-${{ matrix.version }}
+        run: |
+          mkdir -p $HOME/awesome-workshop/histograms
+          bash histograms.sh $HOME/awesome-workshop/skims $HOME/awesome-workshop/histograms
+
+      - name: plots-${{ matrix.version }}
+        run: |
+          mkdir -p $HOME/awesome-workshop/plots
+          bash plot.sh $HOME/awesome-workshop/histograms/histograms.root $HOME/awesome-workshop/plots
+
+      - name: fit-${{ matrix.version }}
+        run: |
+          mkdir -p $HOME/awesome-workshop/fit
+          bash fit.sh $HOME/awesome-workshop/histograms/histograms.root $HOME/awesome-workshop/fit    
