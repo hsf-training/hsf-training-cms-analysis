@@ -25,7 +25,7 @@ repos:
         files: ^(_episodes|code|README.md|setup.md)
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.2.1"
+    rev: "v2.2.2"
     hooks:
       - id: codespell
         args: ["-I", "codespell.txt"]
@@ -33,7 +33,7 @@ repos:
 # === END CENTRALLY MAINTAINED FILE ===
 
   - repo: https://github.com/psf/black
-    rev: 22.8.0
+    rev: 22.10.0
     hooks:
     - id: black
       language_version: python3.7
