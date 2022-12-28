@@ -44,7 +44,7 @@ cd /path/to/analysis/repo
 ```
 
 ```bash
-docker run -it --rm -v $PWD:/analysis -w /analysis 6.26.00-conda /bin/bash
+docker run -it --rm -v $PWD:/analysis -w /analysis rootproject/root:6.26.10-conda /bin/bash
  ```
 
 ## Preprocessing: Reducing the initial samples
