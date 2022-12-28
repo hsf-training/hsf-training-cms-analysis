@@ -9,7 +9,7 @@ on:
 jobs:
   test-analysis:
     runs-on: ubuntu-latest
-    container: rootproject/root:latest
+    container: rootproject/root:6.26.10-conda
 
     permissions:
       contents: read
