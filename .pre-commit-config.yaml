@@ -11,7 +11,7 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -25,15 +25,15 @@ repos:
         files: ^(_episodes|code|README.md|setup.md)
 
   - repo: https://github.com/codespell-project/codespell
-    rev: "v2.3.0"
+    rev: "v2.4.3"
     hooks:
       - id: codespell
         args: ["-I", "codespell.txt"]
         files: '.*\.md'
 # === END CENTRALLY MAINTAINED FILE ===
 
-  - repo: https://github.com/psf/black
-    rev: 24.4.2
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.5.1
     hooks:
     - id: black
       language_version: python3.8
