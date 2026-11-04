@@ -3,7 +3,7 @@ name: HSF CMS Analysis Test
 on:
   pull_request:
   push:
-    branches: 
+    branches:
      - master
   schedule:
      - cron: '0 0 1 * *'
@@ -42,4 +42,4 @@ jobs:
       - name: fit
         run: |
           mkdir -p $HOME/awesome-workshop/fit
-          bash fit.sh $HOME/awesome-workshop/histograms/histograms.root $HOME/awesome-workshop/fit    
+          bash fit.sh $HOME/awesome-workshop/histograms/histograms.root $HOME/awesome-workshop/fit
